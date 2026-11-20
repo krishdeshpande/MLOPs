@@ -1,0 +1,38 @@
+# Prometheus configuration for ML API monitoring
+# Assignment 8 - Krish Deshpande | PRN: 12414049 | Roll: 61 | AIDS Div-C
+
+global:
+  scrape_interval:     15s   # Scrape every 15 seconds
+  evaluation_interval: 15s   # Evaluate rules every 15 seconds
+  scrape_timeout:      10s
+
+# Alertmanager configuration (optional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: []
+
+# Rule files (optional)
+# rule_files:
+#   - "alert_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+
+  # Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Scrape the ML API FastAPI service
+  - job_name: 'ml-api'
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['ml-api:8000']
+    # Optional relabeling to add extra metadata
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '(.*):.*'
+        replacement: '${1}'
