@@ -110,7 +110,12 @@ def train_and_log(model, model_name, params, X_train, X_test, y_train, y_test, t
             sk_model=model,
             artifact_path="model",
             signature=signature,
-            registered_model_name=None,  # Register separately for best model only
+            registered_model_name=None,
+            skops_trusted_types=[
+                "sklearn.tree._tree.Tree",
+                "sklearn.ensemble._forest.RandomForestClassifier",
+                "sklearn.ensemble._base.BaseEnsemble",
+            ],
         )
 
         print(f"  Logged to MLflow ✓")

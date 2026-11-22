@@ -36,7 +36,7 @@ print(f"Missing Values Before Cleaning:\n{df.isnull().sum()}")
 print("\nStep 3: Building Feature Engineering Pipeline...")
 
 TARGET      = 'Survived'
-NUMERIC     = ['Age', 'Fare', 'SibSp', 'Parch']
+NUMERIC     = ['Age', 'Fare']
 CATEGORICAL = ['Sex', 'Embarked', 'Pclass']
 
 X = df[NUMERIC + CATEGORICAL]
@@ -59,7 +59,7 @@ preprocessor = ColumnTransformer([
 
 full_pipeline = Pipeline([
     ('preprocessor', preprocessor),
-    ('selector',     SelectKBest(score_func=f_classif, k=8)),
+    ('selector',     SelectKBest(score_func=f_classif, k=4)),
 ])
 
 # ── Step 6: Transform Dataset ──────────────────────────────────────────────────
